@@ -11,15 +11,21 @@ import rightBigger from '../../images/rightBigger.svg';
 import left from '../../images/left.svg';
 import L from "leaflet";
 
+const previousLayers = [];
+
 function MapUpdater({partners,selectedPartner}){
     const map = useMap();
-    console.log(map);
-    console.log('update called...',selectedPartner,partners);
     map.invalidateSize();
     setTimeout(() => map.invalidateSize(),500);
     setTimeout(() => map.invalidateSize(),600);
     if(Utils.arrayCheck(partners[selectedPartner]?.stops).length){
         setTimeout(() => {
+            if(previousLayers.length){
+                for(let i in previousLayers){
+                    previousLayers[i].remove();
+                }
+                previousLayers.length = 0;
+            }
             const bounds = L.latLngBounds(Utils.arrayCheck(partners[selectedPartner]?.stops).map(({lat,long}) => L.latLng(lat,long)));
             map.fitBounds(bounds,{ padding: [20, 20] });
             Utils.arrayCheck(partners[selectedPartner]?.stops).forEach(({lat,long},index) => {
@@ -31,11 +37,15 @@ function MapUpdater({partners,selectedPartner}){
                 });
                 let marker = L.marker([lat, long], {
                     icon: icon
-                }).addTo(map);
+                });
+                marker.addTo(map);
+                previousLayers.push(marker);
             });
             let polyline = L.polyline(Utils.arrayCheck(partners[selectedPartner]?.stops).map(({lat, long}) => {
                 return [lat, long];
-            }),{color: 'black'}).addTo(map);
+            }),{color: 'black'});
+            polyline.addTo(map);
+            previousLayers.push(polyline);
         },700);
     }else{
         map.setView([13.084622, 80.248357], 9);
