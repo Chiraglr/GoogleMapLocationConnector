@@ -1,0 +1,18 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+.pointer {
+    cursor: pointer;
+}
+input {
+    border: 1px solid grey;
+    outline: none;
+}
+.border-none {
+    border: none;
+}
+.word-break {
+    word-break: break-all;
+}
