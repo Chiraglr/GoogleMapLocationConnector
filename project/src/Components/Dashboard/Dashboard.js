@@ -5,34 +5,22 @@ import styles from './Dashboard.module.scss';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import osm from '../../osm-provider';
 import Utils from '../../utils/utils';
-// import InfiniteScroll from '../Common/InfiniteScroll/InfiniteScroll';
 import Partners from '../../DummyData/Partners';
 import right from '../../images/right.svg';
 import rightBigger from '../../images/rightBigger.svg';
 import left from '../../images/left.svg';
 import L from "leaflet";
 
-const customMarker = new L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [10, 41],
-  popupAnchor: [2, -40]
-});
-
 function MapUpdater({partners,selectedPartner}){
     const map = useMap();
     console.log(map);
     console.log('update called...',selectedPartner,partners);
-    // setTimeout(() => map.invalidateSize(true),500);
-    // setTimeout(() => map.invalidateSize(true),500);
     map.invalidateSize();
     setTimeout(() => map.invalidateSize(),500);
     setTimeout(() => map.invalidateSize(),600);
-    // setTimeout(() => map.invalidateSize(true),700);
     if(Utils.arrayCheck(partners[selectedPartner]?.stops).length){
         setTimeout(() => {
             const bounds = L.latLngBounds(Utils.arrayCheck(partners[selectedPartner]?.stops).map(({lat,long}) => L.latLng(lat,long)));
-            // console.log(bounds);
             map.fitBounds(bounds,{ padding: [20, 20] });
             Utils.arrayCheck(partners[selectedPartner]?.stops).forEach(({lat,long},index) => {
                 let icon = L.divIcon({
@@ -52,7 +40,6 @@ function MapUpdater({partners,selectedPartner}){
     }else{
         map.setView([13.084622, 80.248357], 9);
     }
-    // map.invalidateSize();
     return null;
 }
 
@@ -103,8 +90,6 @@ function Dashboard(props) {
 
     const {search, partners, selectedPartner} = state;
     const {isAllPartnersPage} = props;
-    // console.log({...(!partners[selectedPartner] || !Utils.arrayCheck(partners[selectedPartner]?.stops).length) && {center}},
-    //     {...Utils.arrayCheck(partners[selectedPartner]?.stops).length && {bounds: L.latLngBounds(Utils.arrayCheck(partners[selectedPartner]?.stops).map(({lat,long}) => L.latLng(lat,long)))}});
 
     return <>
         <div className={styles.dashboard}>
@@ -191,7 +176,6 @@ function Dashboard(props) {
                         <MapContainer
                             scrollWheelZoom={false}
                         >
-                            {/* <MapUpdater partners={partners} selectedPartner={selectedPartner} /> */}
                             <TileLayer url={osm.maptiler.url} attribution={osm.maptiler.attribution} />
                             <MapUpdater partners={partners} selectedPartner={selectedPartner} />
                         </MapContainer>

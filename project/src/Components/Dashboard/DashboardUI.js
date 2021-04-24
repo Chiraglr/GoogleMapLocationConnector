@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Button from "../Common/Button/Button";
@@ -79,7 +79,6 @@ function DashboardUI(props) {
         </>}
         <Switch>
             <PrivateRoute exact path="/dashboard/:id*" render={() => <Dashboard isAllPartnersPage={isAllPartnersPage} closePartnerDetailsPage={closePartnerDetailsPage} />} />
-            {/* <PrivateRoute exact path="/discussions/:id" component={Discussions} /> */}
             <PrivateRoute path="*" render={() => <Redirect to="/dashboard" />} />
         </Switch>
     </>;
